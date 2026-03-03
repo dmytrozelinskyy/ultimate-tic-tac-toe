@@ -168,31 +168,11 @@ public class StartGame extends JPanel implements KeyListener {
             }
             if (button.getText().isEmpty()) {
                 if (playingSide == PlayingSide.X_PLAY) {
-                    if(gameMode == GameMode.FRIEND){
                         button.setText("X");
                         playingSide = PlayingSide.O_PLAY;
-                    }
-                    else{
-                        button.setText("X");
-                        int currentPanelIndex = getPanelIndexButtonPressedOn(btn_id);
-
-                        if (isPanelFinished(currentPanelIndex)) {
-                            int nextPanelIndex = findNextAvailablePanel();
-                            if (nextPanelIndex != -1)
-                                makePCMove(nextPanelIndex);
-                            else System.out.println("No available panels");
-                        } else if (!isPanelFinished(currentPanelIndex)) {
-                            makePCMove(btn_id);
-                        }
-                        playingSide = PlayingSide.X_PLAY;
-                    }
-                } else if (playingSide == PlayingSide.O_PLAY) {
-                    if (gameMode == GameMode.FRIEND) {
-                        button.setText("O");
-                        playingSide = PlayingSide.X_PLAY;
-                    } else if (gameMode == GameMode.PC) {
-
-                    }
+                } else {
+                    button.setText("O");
+                    playingSide = PlayingSide.X_PLAY;
                 }
             }
             for (int i = 0; i < panels.length; ++i) {
@@ -230,7 +210,7 @@ public class StartGame extends JPanel implements KeyListener {
                     panels_w.get(0) != null && panels_w.get(0).equals("O") && panels_w.get(4) != null && panels_w.get(4).equals("O") && panels_w.get(8) != null && panels_w.get(8).equals("O") ||             //diagonals
                     panels_w.get(2) != null && panels_w.get(2).equals("O") && panels_w.get(4) != null && panels_w.get(4).equals("O") && panels_w.get(6) != null && panels_w.get(6).equals("O")
             ) {
-                System.out.println("Y WINS");
+                System.out.println("O WINS");
                 setCount_Y(count_Y += 3);
                 winningPopup.setCount_X(count_X);
                 winningPopup.setCount_Y(count_Y);
@@ -253,96 +233,7 @@ public class StartGame extends JPanel implements KeyListener {
             }
             return -1;
         }
-        private void makePCMove(int panelIndex){
-            boolean PC_Moved = false;
-            GamePanel nextPanel = panels[panelIndex];
-            Button[][] buttons = nextPanel.getButtons();
-            for (int j = 0; j < GRID_SIZE; ++j) {
-                int Xcount = 0;
-                int placableIndex = -1;
-                for (int k = 0; k < GRID_SIZE; ++k) {
-                    if (buttons[j][k].getText().equals("X")) {
-                        Xcount++;
-                    } else if (buttons[j][k].getText().equals("")) {
-                        placableIndex = k;
-                    }
-                }
-                if (Xcount == GRID_SIZE - 1 && placableIndex != -1) {
-                    buttons[j][placableIndex].setText("O");
-                    PC_Moved = true;
-                    break;
-                }
-            }
 
-
-            if(!PC_Moved){
-                for (int k = 0; k < GRID_SIZE; ++k) {
-                    int Xcount = 0;
-                    int placableIndex = -1;
-                    for (int j = 0; j < GRID_SIZE; ++j) {
-                        if (buttons[j][k].getText().equals("X")) {
-                            Xcount++;
-                        } else if (buttons[j][k].getText().equals("")) {
-                            placableIndex = j;
-                        }
-                        if (Xcount == GRID_SIZE - 1 && placableIndex != -1) {
-                            buttons[placableIndex][k].setText("O");
-                            PC_Moved = true;
-                            break;
-                        }
-                    }
-                }
-
-                if(!PC_Moved){
-                    int Xcount = 0;
-                    int emptyRowIndex = -1;
-                    int emptyColIndex = -1;
-                    for (int j = 0; j < GRID_SIZE; ++j) {
-                        if (buttons[j][j].getText().equals("X")) {
-                            Xcount++;
-                        } else if (buttons[j][j].getText().equals("")) {
-                            emptyRowIndex = j;
-                            emptyColIndex = j;
-                        }
-                    }
-                    if (Xcount == GRID_SIZE - 1 && emptyRowIndex != -1 && emptyColIndex != -1) {
-                        buttons[emptyRowIndex][emptyColIndex].setText("O");
-                        PC_Moved = true;
-                    }
-                }
-
-                if(!PC_Moved){
-                    int Xcount = 0;
-                    int emptyRowIndex = -1;
-                    int emptyColIndex = -1;
-                    for (int j = 0; j < GRID_SIZE; ++j) {
-                        if (buttons[j][GRID_SIZE - j - 1].getText().equals("X")) {
-                            Xcount++;
-                        } else if (buttons[j][GRID_SIZE - j - 1].getText().equals("")) {
-                            emptyRowIndex = j;
-                            emptyColIndex = GRID_SIZE - j - 1;
-                        }
-                    }
-                    if (Xcount == GRID_SIZE - 1 && emptyRowIndex != -1 && emptyColIndex != -1) {
-                        buttons[emptyRowIndex][emptyColIndex].setText("O");
-                        PC_Moved = true;
-                    }
-                }
-
-                if (!PC_Moved) {
-                    for (int j = 0; j < GRID_SIZE; ++j) {
-                        for (int k = 0; k < GRID_SIZE; ++k) {
-                            if (buttons[j][k].getText().equals("")) {
-                                buttons[j][k].setText("O");
-                                PC_Moved = true;
-                                break;
-                            }
-                        }
-                        if (PC_Moved) break;
-                    }
-                }
-            }
-        }
         private boolean checkWinningCombinations(GamePanel panel, String side){
             Button[][] buttons = panel.getButtons();
             // Checking Rows

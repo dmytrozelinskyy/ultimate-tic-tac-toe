@@ -6,7 +6,7 @@ public class GameOptions extends JWindow {
     private JPanel optionsPanel = new JPanel();
     private JButton playWithFriend_btn = new JButton("Play with Friend",
             new ImageIcon("..\\UltimateTicTacToe\\resources\\images\\games.png"));
-    private JButton playWithPC_btn = new JButton("Play with PC",
+    private JButton playWithPC_btn = new JButton("Play with PC (soon...)",
             new ImageIcon("..\\UltimateTicTacToe\\resources\\images\\pc_ttt.png"));
 
     private GameMode gameMode;
@@ -45,6 +45,8 @@ public class GameOptions extends JWindow {
         exitButton.addActionListener(e -> setVisible(false));
 
         setButton(playWithFriend_btn, GameMode.FRIEND, "Ultimate Tic Tac Toe(Friend Mode)");
+
+        playWithPC_btn.setEnabled(false);
         setButton(playWithPC_btn, GameMode.PC, "Ultimate Tic Tac Toe(PC Mode)");
 
         optionsPanel.add(playWithFriend_btn);
